@@ -290,15 +290,15 @@ public class RuleApplet extends Applet {
 		pain.setPromptText("What kind of pain you have?") ;
 		rb.variableList.put(pain.name,pain) ;
 		
-		RuleVariable num_wheels = new RuleVariable("num_wheels") ;
-		num_wheels.setLabels("2 3 4") ;
-		num_wheels.setPromptText("How many wheels does it have?");
-		rb.variableList.put(num_wheels.name,num_wheels) ;
+		RuleVariable other = new RuleVariable("other") ;
+		other.setLabels("Vomiting Vertigo Diarrhea") ;
+		other.setPromptText("Have you something to add?");
+		rb.variableList.put(other.name,other) ;
 		
-		RuleVariable num_doors = new RuleVariable("num_doors") ;
-		num_doors.setLabels("2 3 4") ;
-		num_doors.setPromptText("How many doors does it have?") ;
-		rb.variableList.put(num_doors.name,num_doors) ;
+		RuleVariable Bleeding = new RuleVariable("Bleeding") ;
+		Bleeding.setLabels("no yes") ;
+		Bleeding.setPromptText("How many doors does it have?") ;
+		rb.variableList.put(Bleeding.name,Bleeding) ;
 		
 		// Note: at this point all variables values are NULL
 		Condition cEquals = new Condition("=") ;
@@ -307,68 +307,68 @@ public class RuleApplet extends Applet {
 
 		// define rules
 		rb.ruleList = new Vector() ;
-		Rule Bicycle = new Rule(rb, "bicycle",
-		new Clause(temperature,cEquals, "cycle") ,
-		new Clause(num_wheels,cEquals, "2"),
-		new Clause(pain, cEquals, "no"),
-		new Clause(malady, cEquals, "Bicycle")) ;
+		Rule Gastritis = new Rule(rb, "Gastritis",
+		new Clause(temperature,cEquals, "low") ,
+		new Clause(other,cEquals, "Vertigo"),
+		new Clause(pain, cEquals, "Toothache"),
+		new Clause(malady, cEquals, "Gastritis")) ;
 		
-		Rule Tricycle = new Rule(rb, "tricycle",
-		new Clause(temperature,cEquals, "cycle") ,
-		new Clause(num_wheels,cEquals, "3"),
-		new Clause(pain, cEquals, "no"),
-		new Clause(malady, cEquals, "Tricycle")) ;
+		Rule Poisoning = new Rule(rb, "Poisoning",
+		new Clause(temperature,cEquals, "high") ,
+		new Clause(other,cEquals, "Vomiting"),
+		new Clause(pain, cEquals, "abdominal"),
+		new Clause(malady, cEquals, "Poisoning")) ;
 		
-		Rule Motorcycle = new Rule(rb, "motorcycle",
-		new Clause(temperature,cEquals, "cycle") ,
-		new Clause(num_wheels,cEquals, "2"),
-		new Clause(pain,cEquals, "yes"),
-		new Clause(malady,cEquals, "Motorcycle")) ;
+		Rule Migraine = new Rule(rb, "Migraine",
+		new Clause(temperature,cEquals, "low") ,
+		new Clause(other,cEquals, "Diarrhea"),
+		new Clause(pain,cEquals, "abdominal"),
+		new Clause(malady,cEquals, "Migraine")) ;
 		
-		Rule SportsCar = new Rule(rb, "sportsCar",
-		new Clause(temperature,cEquals, "automobile") ,
-		new Clause(duration,cEquals, "small"),
-		new Clause(num_doors,cEquals, "2"),
-		new Clause(malady,cEquals, "Sports_Car")) ;
+		Rule Angina = new Rule(rb, "Angina",
+		new Clause(temperature,cEquals, "medium") ,
+		new Clause(duration,cEquals, "+3days"),
+		new Clause(Bleeding,cEquals, "no"),
+		new Clause(malady,cEquals, "Angina")) ;
 		
-		Rule Sedan = new Rule(rb, "sedan",
+		Rule Allergy = new Rule(rb, "Allergy",
+		new Clause(temperature,cEquals, "high") ,
+		new Clause(duration,cEquals, "2days"),
+		new Clause(Bleeding,cEquals, "yes"),
+		new Clause(malady,cEquals, "Allergy")) ;
+		
+		/*Rule MiniVan = new Rule(rb, "miniVan",
 		new Clause(temperature,cEquals, "automobile") ,
 		new Clause(duration,cEquals, "medium"),
-		new Clause(num_doors,cEquals, "4"),
-		new Clause(malady,cEquals, "Sedan")) ;
-		
-		Rule MiniVan = new Rule(rb, "miniVan",
-		new Clause(temperature,cEquals, "automobile") ,
-		new Clause(duration,cEquals, "medium"),
-		new Clause(num_doors,cEquals, "3"),
+		new Clause(Bleeding,cEquals, "3"),
 		new Clause(malady,cEquals, "MiniVan")) ;
 		
 		Rule SUV = new Rule(rb, "SUV",
 		new Clause(temperature,cEquals, "automobile") ,
 		new Clause(duration,cEquals, "large"),
-		new Clause(num_doors,cEquals, "4"),
+		new Clause(Bleeding,cEquals, "4"),
 		new Clause(malady,cEquals, "Sports_Utility_Vehicle")) ;
 		
 		Rule Cycle = new Rule(rb, "Cycle",
-		new Clause(num_wheels,cLessThan, "4") ,
+		new Clause(other,cLessThan, "4") ,
 		new Clause(temperature,cEquals, "cycle")) ;
 		
 		Rule Automobile = new Rule(rb, "Automobile",
-		new Clause(num_wheels,cEquals, "4") ,
+		new Clause(other,cEquals, "4") ,
 		new Clause(pain,cEquals, "yes"),
-		new Clause(temperature,cEquals, "automobile")) ;
+		new Clause(temperature,cEquals, "automobile")) ;*/
 	}
 
 	public void demoMedicamentsFC(RuleBase rb) {
 
 		textArea2.appendText("\n --- Starting Demo ForwardChain ---\n ") ;
 		// should be a Mini-Van
-		((RuleVariable)rb.variableList.get("vehicle")).setValue(null) ;
-		((RuleVariable)rb.variableList.get("vehicleType")).setValue(null) ;
-		((RuleVariable)rb.variableList.get("size")).setValue("medium") ;
-		((RuleVariable)rb.variableList.get("num_wheels")).setValue("4") ;
-		((RuleVariable)rb.variableList.get("num_doors")).setValue("3") ;
-		((RuleVariable)rb.variableList.get("motor")).setValue("yes") ;
+		((RuleVariable)rb.variableList.get("malady")).setValue(null) ;
+		((RuleVariable)rb.variableList.get("temperature")).setValue(null) ;
+		((RuleVariable)rb.variableList.get("duration")).setValue("1day") ;
+		((RuleVariable)rb.variableList.get("pain")).setValue("articular") ;
+		((RuleVariable)rb.variableList.get("other")).setValue("Vomiting") ;
+		((RuleVariable)rb.variableList.get("Bleeding")).setValue("yes") ;
 		rb.displayVariables(textArea2) ;
 		rb.forwardChain() ; // chain until quiescence...
 		textArea2.appendText("\n --- Stopping Demo ForwardChain! ---\n") ;
@@ -379,12 +379,12 @@ public class RuleApplet extends Applet {
 
 		textArea2.appendText("\n --- Starting Demo BackwardChain ---\n ") ;
 		// should be a minivan
-		((RuleVariable)rb.variableList.get("vehicle")).setValue(null) ;
-		((RuleVariable)rb.variableList.get("vehicleType")).setValue(null) ;
-		((RuleVariable)rb.variableList.get("size")).setValue("medium") ;
-		((RuleVariable)rb.variableList.get("num_wheels")).setValue("4") ;
-		((RuleVariable)rb.variableList.get("num_doors")).setValue("3") ;
-		((RuleVariable)rb.variableList.get("motor")).setValue("yes") ;
+		((RuleVariable)rb.variableList.get("malady")).setValue(null) ;
+		((RuleVariable)rb.variableList.get("temperature")).setValue(null) ;
+		((RuleVariable)rb.variableList.get("duration")).setValue("1day") ;
+		((RuleVariable)rb.variableList.get("pain")).setValue("articular") ;
+		((RuleVariable)rb.variableList.get("other")).setValue("Vomiting") ;
+		((RuleVariable)rb.variableList.get("Bleeding")).setValue("yes") ;
 		rb.displayVariables(textArea2) ;
 		rb.backwardChain("vehicle") ; // chain until quiescence...
 		textArea2.appendText("\n --- Stopping Demo BackwardChain! ---\n ") ;
