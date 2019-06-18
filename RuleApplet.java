@@ -9,8 +9,8 @@ public class RuleApplet extends Applet {
 
 		String rbName = choice1.getSelectedItem() ;
 
-		if (rbName.equals("Vehicles"))
-			currentRuleBase = vehicles ;
+		if (rbName.equals("Medicament"))
+			currentRuleBase = Medicaments ;
 
 		//if (rbName.equals("Bugs")) currentRuleBase = bugs ;
 		//if (rbName.equals("Plants")) currentRuleBase = plants ;
@@ -65,12 +65,12 @@ public class RuleApplet extends Applet {
 
 		String rbName = choice1.getSelectedItem() ;
 
-		if (rbName.equals("Vehicles")) {
+		if (rbName.equals("Medicaments")) {
 
 			if (radioButton1.getState() == true)
-				demoVehiclesFC(vehicles);
+				demoMedicamentsFC(Medicaments);
 			if (radioButton2.getState() == true)
-				demoVehiclesBC(vehicles);
+				demoMedicamentsBC(Medicaments);
 		}
 
 		//else if (rbName.equals("Bugs")) {
@@ -161,13 +161,13 @@ public class RuleApplet extends Applet {
 		frame = new Frame("Ask User") ;
 		frame.resize(50,50) ;
 		frame.setLocation(100,100) ;
-		choice1.addItem("Vehicles") ;
+		choice1.addItem("Medicaments") ;
 		//choice1.addItem("Bugs"") ;
 		//choice1.addItem("Plants") ;
-		vehicles = new RuleBase("Vehicles Rule Base" ) ;
-		vehicles.setDisplay(textArea2) ;
-		initVehiclesRuleBase(vehicles) ;
-		currentRuleBase = vehicles ;
+		Medicaments = new RuleBase("Medicaments Rule Base" ) ;
+		Medicaments.setDisplay(textArea2) ;
+		initMedicamentsRuleBase(Medicaments) ;
+		currentRuleBase = Medicaments ;
 		//bugs = new RuleBase("Bugs Rule Base") ;
 		//bugs.setDisplay(textArea2) ;
 		//initBugsRuleBase(bugs) ;
@@ -246,7 +246,7 @@ public class RuleApplet extends Applet {
 	static RuleVarDialog dlg ;
 	//static RuleBase bugs ;
 	//static RuleBase plants ;
-	static RuleBase vehicles ;
+	static RuleBase Medicaments ;
 	static RuleBase currentRuleBase ;
 	//....
 	// Rule base definitions
@@ -264,35 +264,42 @@ public class RuleApplet extends Applet {
 		return ans ;
 	}
 
-	//initialize the Vehicles rule base
-	public void initVehiclesRuleBase(RuleBase rb) {
+	//initialize the Medicaments rule base
+	public void initMedicamentsRuleBase(RuleBase rb) {
 
 		rb.goalClauseStack = new Stack() ; // goals and subgoals
 		rb.variableList = new Hashtable() ;
-		RuleVariable vehicle = new RuleVariable("vehicle") ;
-		vehicle.setLabels("Bicycle Tricycle MotorCycle Sports_Car Sedan MiniVan Sports_Utility_Vehicle") ;
-		vehicle.setPromptText("What kind of vehicle is it?");
-		rb.variableList.put(vehicle.name,vehicle) ;
-		RuleVariable vehicleType = new RuleVariable("vehicleType") ;
-		vehicleType.setLabels("cycle automobile") ;
-		vehicleType.setPromptText("What type of vehicle is it?") ;
-		rb.variableList.put(vehicleType.name, vehicleType) ;
-		RuleVariable size = new RuleVariable("size") ;
-		size.setLabels("small medium large") ;
-		size.setPromptText("What size is the vehicle?") ;
-		rb.variableList.put(size.name,size) ;
-		RuleVariable motor = new RuleVariable("motor") ;
-		motor.setLabels("yes no") ;
-		motor.setPromptText("Does the vehicle have a motor?") ;
-		rb.variableList.put(motor.name,motor) ;
+		
+		RuleVariable malady = new RuleVariable("Malady") ;
+		malady.setLabels("Gastritis Poisoning Migraine Angina Allergy") ;
+		malady.setPromptText("What kind of vehicle is it?");
+		rb.variableList.put(malady.name,malady) ;
+		
+		RuleVariable temperature = new RuleVariable("temperature") ;
+		temperature.setLabels("high medium low") ;
+		temperature.setPromptText("How your temperature is ?") ;
+		rb.variableList.put(temperature.name, temperature) ;
+		
+		RuleVariable duration = new RuleVariable("duration") ;
+		duration.setLabels("1day 2days +3days") ;
+		duration.setPromptText("since when you have sickness?") ;
+		rb.variableList.put(duration.name,duration) ;
+		
+		RuleVariable pain = new RuleVariable("pain") ;
+		pain.setLabels("articular abdominal Toothache") ;
+		pain.setPromptText("What kind of pain you have?") ;
+		rb.variableList.put(pain.name,pain) ;
+		
 		RuleVariable num_wheels = new RuleVariable("num_wheels") ;
 		num_wheels.setLabels("2 3 4") ;
 		num_wheels.setPromptText("How many wheels does it have?");
 		rb.variableList.put(num_wheels.name,num_wheels) ;
+		
 		RuleVariable num_doors = new RuleVariable("num_doors") ;
 		num_doors.setLabels("2 3 4") ;
 		num_doors.setPromptText("How many doors does it have?") ;
 		rb.variableList.put(num_doors.name,num_doors) ;
+		
 		// Note: at this point all variables values are NULL
 		Condition cEquals = new Condition("=") ;
 		Condition cNotEquals = new Condition("!=") ;
@@ -301,50 +308,58 @@ public class RuleApplet extends Applet {
 		// define rules
 		rb.ruleList = new Vector() ;
 		Rule Bicycle = new Rule(rb, "bicycle",
-		new Clause(vehicleType,cEquals, "cycle") ,
+		new Clause(temperature,cEquals, "cycle") ,
 		new Clause(num_wheels,cEquals, "2"),
-		new Clause(motor, cEquals, "no"),
-		new Clause(vehicle, cEquals, "Bicycle")) ;
+		new Clause(pain, cEquals, "no"),
+		new Clause(malady, cEquals, "Bicycle")) ;
+		
 		Rule Tricycle = new Rule(rb, "tricycle",
-		new Clause(vehicleType,cEquals, "cycle") ,
+		new Clause(temperature,cEquals, "cycle") ,
 		new Clause(num_wheels,cEquals, "3"),
-		new Clause(motor, cEquals, "no"),
-		new Clause(vehicle, cEquals, "Tricycle")) ;
+		new Clause(pain, cEquals, "no"),
+		new Clause(malady, cEquals, "Tricycle")) ;
+		
 		Rule Motorcycle = new Rule(rb, "motorcycle",
-		new Clause(vehicleType,cEquals, "cycle") ,
+		new Clause(temperature,cEquals, "cycle") ,
 		new Clause(num_wheels,cEquals, "2"),
-		new Clause(motor,cEquals, "yes"),
-		new Clause(vehicle,cEquals, "Motorcycle")) ;
+		new Clause(pain,cEquals, "yes"),
+		new Clause(malady,cEquals, "Motorcycle")) ;
+		
 		Rule SportsCar = new Rule(rb, "sportsCar",
-		new Clause(vehicleType,cEquals, "automobile") ,
-		new Clause(size,cEquals, "small"),
+		new Clause(temperature,cEquals, "automobile") ,
+		new Clause(duration,cEquals, "small"),
 		new Clause(num_doors,cEquals, "2"),
-		new Clause(vehicle,cEquals, "Sports_Car")) ;
+		new Clause(malady,cEquals, "Sports_Car")) ;
+		
 		Rule Sedan = new Rule(rb, "sedan",
-		new Clause(vehicleType,cEquals, "automobile") ,
-		new Clause(size,cEquals, "medium"),
+		new Clause(temperature,cEquals, "automobile") ,
+		new Clause(duration,cEquals, "medium"),
 		new Clause(num_doors,cEquals, "4"),
-		new Clause(vehicle,cEquals, "Sedan")) ;
+		new Clause(malady,cEquals, "Sedan")) ;
+		
 		Rule MiniVan = new Rule(rb, "miniVan",
-		new Clause(vehicleType,cEquals, "automobile") ,
-		new Clause(size,cEquals, "medium"),
+		new Clause(temperature,cEquals, "automobile") ,
+		new Clause(duration,cEquals, "medium"),
 		new Clause(num_doors,cEquals, "3"),
-		new Clause(vehicle,cEquals, "MiniVan")) ;
+		new Clause(malady,cEquals, "MiniVan")) ;
+		
 		Rule SUV = new Rule(rb, "SUV",
-		new Clause(vehicleType,cEquals, "automobile") ,
-		new Clause(size,cEquals, "large"),
+		new Clause(temperature,cEquals, "automobile") ,
+		new Clause(duration,cEquals, "large"),
 		new Clause(num_doors,cEquals, "4"),
-		new Clause(vehicle,cEquals, "Sports_Utility_Vehicle")) ;
+		new Clause(malady,cEquals, "Sports_Utility_Vehicle")) ;
+		
 		Rule Cycle = new Rule(rb, "Cycle",
 		new Clause(num_wheels,cLessThan, "4") ,
-		new Clause(vehicleType,cEquals, "cycle")) ;
+		new Clause(temperature,cEquals, "cycle")) ;
+		
 		Rule Automobile = new Rule(rb, "Automobile",
 		new Clause(num_wheels,cEquals, "4") ,
-		new Clause(motor,cEquals, "yes"),
-		new Clause(vehicleType,cEquals, "automobile")) ;
+		new Clause(pain,cEquals, "yes"),
+		new Clause(temperature,cEquals, "automobile")) ;
 	}
 
-	public void demoVehiclesFC(RuleBase rb) {
+	public void demoMedicamentsFC(RuleBase rb) {
 
 		textArea2.appendText("\n --- Starting Demo ForwardChain ---\n ") ;
 		// should be a Mini-Van
@@ -360,7 +375,7 @@ public class RuleApplet extends Applet {
 		rb.displayVariables(textArea2);
 	}
 
-	public void demoVehiclesBC(RuleBase rb) {
+	public void demoMedicamentsBC(RuleBase rb) {
 
 		textArea2.appendText("\n --- Starting Demo BackwardChain ---\n ") ;
 		// should be a minivan
